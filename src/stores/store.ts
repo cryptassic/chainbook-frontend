@@ -1,3 +1,4 @@
 import { writable } from 'svelte/store';
 
-export const user = writable<User>();
+export const userStorage = writable<UserStorage | undefined>();
+export const clientStorage = writable<SigningCosmWasmClient | undefined>();

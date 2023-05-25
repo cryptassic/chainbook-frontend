@@ -1,16 +1,18 @@
 <script lang="ts">
 	import User from './user.svelte';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
+
 	import { get } from 'svelte/store';
-	import { user as userStore } from '../../stores/store';
+	import { userStorage } from '../../stores/store';
 
 	import { connect } from '../../user';
 
-	let user = get(userStore);
+	let user = get(userStorage);
 
-	userStore.subscribe((value) => {
-		user = value;
-		console.log(`${new Date().toISOString()} - Received new User:${value?.account.address}`);
+	userStorage.subscribe((value) => {
+		if (value) {
+			user = value;
+		}
 	});
 </script>
 
@@ -23,6 +25,7 @@
 					class="mr-3 h-6 sm:h-9"
 					alt="ChainBook Logo"
 				/>
+
 				<span
 					class="hidden lg:flex self-center text-xl font-semibold whitespace-nowrap dark:text-white"
 					>ChainBook</span
@@ -32,7 +35,9 @@
 				<div class="mr-4 items-center">
 					<LightSwitch />
 				</div>
-				{#if user === undefined}
+				{#if user?.status === 'connected'}
+					<User />
+				{:else}
 					<button type="button" class="btn variant-ghost" on:click={connect}>
 						<span>
 							<svg
@@ -49,26 +54,7 @@
 						</span>
 						<span>CONNECT</span>
 					</button>
-				{:else}
-					<User />
 				{/if}
-				<!-- <a
-					href="#"
-					class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-				>
-					<svg
-						class="w-6 h-6"
-						focusable="false"
-						aria-hidden="true"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-					>
-						<path
-							d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"
-						/>
-					</svg>
-					CONNECT
-				</a> -->
 				<button
 					data-collapse-toggle="mobile-menu-2"
 					type="button"

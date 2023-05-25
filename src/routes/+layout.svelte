@@ -5,9 +5,24 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
+	// Required for FloatUI popups
+	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
+	import { AppShell, Modal, storePopup } from '@skeletonlabs/skeleton';
 
-	import { AppShell, Modal } from '@skeletonlabs/skeleton';
 	import Navigation from '$lib/Navigation/navigation.svelte';
+
+	import { browser } from '$app/environment';
+	import { userStorage } from '../stores/store';
+
+	// Passing required FloatUI modules. This is required for popups to work
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
+	// Writes all userStorage data into localstorage. Used to handle wallet connections.
+	userStorage.subscribe((value) => {
+		if (browser && value) {
+			window.localStorage.setItem('@chainbook-user', JSON.stringify(value));
+		}
+	});
 </script>
 
 <svelte:head>

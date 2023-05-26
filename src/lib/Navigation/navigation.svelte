@@ -5,7 +5,7 @@
 	import { get } from 'svelte/store';
 	import { userStorage } from '../../stores/store';
 
-	import { connect } from '../../user';
+	import { connect } from '../wallet';
 
 	let user = get(userStorage);
 

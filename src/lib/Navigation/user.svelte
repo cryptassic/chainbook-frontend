@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { userStorage } from '../../stores/store';
-	import { disconnect } from '../../user';
+	import { disconnect } from '../wallet';
 
 	import { popup, Avatar } from '@skeletonlabs/skeleton';
 	import type { PopupSettings } from '@skeletonlabs/skeleton';
